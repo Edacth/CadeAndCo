@@ -10,7 +10,7 @@ public class playerController : MonoBehaviour {
     private Vector2 mouseMovement;
     private CharacterController controller;
     private Transform cam;
-    private float rotationLock = 0.7f;
+    private float rotationLock = 280f;
 
     bool isHoldingKey = false;
 
@@ -28,26 +28,45 @@ public class playerController : MonoBehaviour {
 
 
         // This changes the player rotation
+        // Left/Right
         mouseMovement = new Vector2(Input.GetAxisRaw("Mouse X"), -Input.GetAxisRaw("Mouse Y"));
-        Vector3 rotation = new Vector3(0 , mouseMovement.x, 0);
-        gameObject.transform.Rotate(rotation * rotationSpeed);
+        Vector3 deltaRotation = new Vector3(0 , mouseMovement.x, 0) * rotationSpeed;
+        gameObject.transform.Rotate(deltaRotation);
 
-        rotation = new Vector3(mouseMovement.y, 0, 0);
-        float deltaRot = cam.transform.rotation.x + mouseMovement.y * rotationSpeed;
-        if (deltaRot > rotationLock)
+        // Up/Down
+        deltaRotation = new Vector3(mouseMovement.y, 0, 0) * rotationSpeed;
+        //float deltaRot = cam.transform.localRotation.x + mouseMovement.y * rotationSpeed;
+        
+        //if (cam.transform.localRotation.x < 0)
         {
-            float diff = rotationLock - cam.transform.rotation.x;
-            rotation = new Vector3(diff, 0, 0);
+            float diff = rotationLock - cam.transform.localRotation.eulerAngles.x;
+            if (cam.transform.localRotation.eulerAngles.x  < rotationLock && cam.transform.localRotation.eulerAngles.x  < 90)
+            {
+                //deltaRotation = new Vector3(diff, 0, 0);
+                Debug.Log("true");
+            }
+            //print("DeltaRot: " + deltaRot);
+            
+            print("Difference: " + diff);
 
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                deltaRotation = new Vector3(diff, 0, 0);
+            }
         }
+
+        print("LocalRotation: " + cam.transform.localRotation.eulerAngles);
+
         /*if (deltaRot < -rotationLock)
         {
             float diff = rotationLock - cam.transform.rotation.x;
             rotation = new Vector3(diff, 0, 0);
         }*/
-        cam.transform.Rotate(rotation * rotationSpeed);
+
+
+        cam.transform.Rotate(deltaRotation);
         
-        Debug.Log(cam.transform.localRotation);
+        
         // This handles player movement
         Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));      
         controller.Move(gameObject.transform.forward * movement.z * moveSpeed);
