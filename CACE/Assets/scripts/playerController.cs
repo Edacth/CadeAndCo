@@ -12,6 +12,8 @@ public class playerController : MonoBehaviour {
     private Transform cam;
     private float rotationLock = 0.7f;
 
+    bool isHoldingKey = false;
+
     // Use this for initialization
     void Start ()
     {
@@ -50,6 +52,14 @@ public class playerController : MonoBehaviour {
         Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));      
         controller.Move(gameObject.transform.forward * movement.z * moveSpeed);
         controller.Move(gameObject.transform.right * movement.x * moveSpeed );
+    }
+    void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.CompareTag("pickup"))
+        {
+            other.gameObject.SetActive(false);
+            isHoldingKey = true;
+        }
     }
 
 }
