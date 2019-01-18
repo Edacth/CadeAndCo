@@ -2,54 +2,54 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour {
+public class playerController : MonoBehaviour {
 
-    public int moveSpeed = 10;
-    public int rotationSpeed = 3;
-    public Rigidbody rb;
-    Vector3 prevMousePos;
+    public float moveSpeed;
+    public float rotationSpeed;
+    
+    private Vector2 mouseMovement;
+    private CharacterController controller;
+    private Transform cam;
+    private float rotationLock = 0.7f;
 
-
-	// Use this for initialization
-	void Start () {
-        rb = GetComponent<Rigidbody>();
-        prevMousePos = Input.mousePosition;
+    // Use this for initialization
+    void Start ()
+    {
+        controller = GetComponent<CharacterController>();
+        cam = transform.GetChild(0);
+        Cursor.visible = false;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        // player rotation
-        Vector3 mousePos = Input.mousePosition;
-        Vector3 rotation = new Vector3(0, rotationSpeed, 0);
-        float dif = mousePos.x - prevMousePos.x;
-        if (dif < 0)
-        {
-            rb.transform.Rotate(rotation * -1);
-        }
-        if (dif > 0)
-        {
-            rb.transform.Rotate(rotation);
-        }
-        prevMousePos = mousePos;
-        // move forward back towards the center of screen
 
-        // player movement (WASD)
-        Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));      
-        float rotationFromOrig = Vector3.Angle(new Vector3(0, 0, 1), rb.transform.forward);
-        if (rb.transform.forward.x < 0)
+
+        // This changes the player rotation
+        mouseMovement = new Vector2(Input.GetAxisRaw("Mouse X"), -Input.GetAxisRaw("Mouse Y"));
+        Vector3 rotation = new Vector3(0 , mouseMovement.x, 0);
+        gameObject.transform.Rotate(rotation * rotationSpeed);
+
+        rotation = new Vector3(mouseMovement.y, 0, 0);
+        float deltaRot = cam.transform.rotation.x + mouseMovement.y * rotationSpeed;
+        if (deltaRot > rotationLock)
         {
-            rotationFromOrig = 180 - rotationFromOrig + 180;
+            float diff = rotationLock - cam.transform.rotation.x;
+            rotation = new Vector3(diff, 0, 0);
+
         }
-
-        Quaternion rotationFromOriginQ = Quaternion.Euler(0, rotationFromOrig, 0);
-        Vector3 netMovement = rotationFromOriginQ * movement;
-
-        netMovement.Normalize();
+        /*if (deltaRot < -rotationLock)
+        {
+            float diff = rotationLock - cam.transform.rotation.x;
+            rotation = new Vector3(diff, 0, 0);
+        }*/
+        cam.transform.Rotate(rotation * rotationSpeed);
         
-        rb.MovePosition(rb.position + netMovement * (moveSpeed / 100f));
-
-        Debug.Log(rb.transform.forward);
+        Debug.Log(cam.transform.localRotation);
+        // This handles player movement
+        Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));      
+        controller.Move(gameObject.transform.forward * movement.z * moveSpeed);
+        controller.Move(gameObject.transform.right * movement.x * moveSpeed );
     }
 
 }
