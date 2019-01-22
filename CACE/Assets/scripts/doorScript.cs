@@ -65,7 +65,7 @@ public class doorScript : MonoBehaviour {
         {      
             t += 0.01f;
 
-            interpos = (0.59f * (1 - t) + 4 * t);
+            interpos = (0.59f * (1 - t) + 10 * t);
             transform.position = new Vector3(transform.position.x, interpos, transform.position.z);
             yield return null;
             
@@ -74,7 +74,7 @@ public class doorScript : MonoBehaviour {
         {
             t -= 0.01f;
 
-            interpos = (0.59f * (1 - t) + 4 * t);
+            interpos = (0.59f * (1 - t) + 10 * t);
             transform.position = new Vector3(transform.position.x, interpos, transform.position.z);
             yield return null;
 
