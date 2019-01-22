@@ -6,8 +6,10 @@ public class playerController : MonoBehaviour {
 
     public float moveSpeed;
     public float rotationSpeed;
-    
+    public bool isHoldingKey = false;
+
     private Vector2 mouseMovement;
+    private Transform rotationProbe;
     private static CharacterController controller;
     private Transform cam;
     private float rotationLock = 280f;
@@ -15,7 +17,7 @@ public class playerController : MonoBehaviour {
     private int interactionLength = 10; // how close you have to be to push buttons
     Ray ray;
     RaycastHit hit;
-    bool isHoldingKey = false;
+
 
     // Use this for initialization
     void Start ()
@@ -37,33 +39,29 @@ public class playerController : MonoBehaviour {
 
         // Up/Down
         deltaRotation = new Vector3(mouseMovement.y, 0, 0) * rotationSpeed;
+
+        rotationProbe.Rotate(deltaRotation);
         //float deltaRot = cam.transform.localRotation.x + mouseMovement.y * rotationSpeed;
         
-        //if (cam.transform.localRotation.x < 0)
+        if (rotationProbe.localRotation.y == 180) 
         {
-            float diff = rotationLock - cam.transform.localRotation.eulerAngles.x;
-            if (cam.transform.localRotation.eulerAngles.x  < rotationLock && cam.transform.localRotation.eulerAngles.x  < 90)
+            /*float diff = rotationLock - cam.transform.localRotation.eulerAngles.x;
+            if (cam.transform.eulerAngles.x < rotationLock && cam.transform.eulerAngles.x  < 90)
             {
-                //deltaRotation = new Vector3(diff, 0, 0);
+                
                 Debug.Log("true");
-            }
-            //print("DeltaRot: " + deltaRot);
+            }*/
             
-            print("Difference: " + diff);
 
-            if (Input.GetKeyDown(KeyCode.E))
+            /*if (Input.GetKeyDown(KeyCode.E))
             {
                 deltaRotation = new Vector3(diff, 0, 0);
-            }
+            }*/
+
+            //rotationProbe.eulerAngles
         }
 
-        print("LocalRotation: " + cam.transform.localRotation.eulerAngles);
-
-        /*if (deltaRot < -rotationLock)
-        {
-            float diff = rotationLock - cam.transform.rotation.x;
-            rotation = new Vector3(diff, 0, 0);
-        }*/
+        print("LocalRotation: " + cam.transform.eulerAngles);
 
 
         cam.transform.Rotate(deltaRotation);
