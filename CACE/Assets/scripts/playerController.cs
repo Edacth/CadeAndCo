@@ -8,10 +8,13 @@ public class playerController : MonoBehaviour {
     public float rotationSpeed;
     
     private Vector2 mouseMovement;
-    private CharacterController controller;
+    private static CharacterController controller;
     private Transform cam;
     private float rotationLock = 280f;
 
+    private int interactionLength = 10; // how close you have to be to push buttons
+    Ray ray;
+    RaycastHit hit;
     bool isHoldingKey = false;
 
     // Use this for initialization
@@ -20,13 +23,12 @@ public class playerController : MonoBehaviour {
         controller = GetComponent<CharacterController>();
         cam = transform.GetChild(0);
         Cursor.visible = false;
+        ray = new Ray(controller.center, controller.transform.forward);
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-
-
         // This changes the player rotation
         // Left/Right
         mouseMovement = new Vector2(Input.GetAxisRaw("Mouse X"), -Input.GetAxisRaw("Mouse Y"));
@@ -65,13 +67,24 @@ public class playerController : MonoBehaviour {
 
 
         cam.transform.Rotate(deltaRotation);
-        
-        
+              
         // This handles player movement
         Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));      
         controller.Move(gameObject.transform.forward * movement.z * moveSpeed);
         controller.Move(gameObject.transform.right * movement.x * moveSpeed );
+
+        // update ray
+        // what is the better way to do this?
+        ray = new Ray(cam.position, cam.transform.forward);
+        // Debug.DrawRay(controller.center, controller.transform.forward, Color.red, 100);
+
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            CheckForInteractable();
+        }
+       
     }
+
     void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.CompareTag("pickup"))
@@ -79,6 +92,21 @@ public class playerController : MonoBehaviour {
             other.gameObject.SetActive(false);
             isHoldingKey = true;
         }
+    }
+
+    void CheckForInteractable()
+    {
+    
+        if (Physics.Raycast(ray, out hit))
+        {
+            bool didHit = false;
+            if (hit.collider.gameObject.tag.Equals("button2"))
+            {
+                didHit = true;
+            }
+            hit.collider.gameObject.GetComponent<button2Script>().PlayerLooking(didHit);
+        }
+  
     }
 
 }
