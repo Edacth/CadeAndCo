@@ -6,13 +6,35 @@ public class buttonScript : MonoBehaviour
 {
 
     public bool pressed = false;
+    public GameObject player;
+
+    private playerController PlayerController;
+
     Material myMaterial;
 
     // Use this for initialization
     void Start()
     {
         myMaterial = GetComponent<Renderer>().material;
+        PlayerController = player.GetComponent<playerController>();
 
+    }
+
+    private void OnEnable()
+    {
+        PlayerController.RemoteControls += myRemoteControledMethod;
+        
+    }
+
+    private void OnDisable()
+    {
+        PlayerController.RemoteControls -= myRemoteControledMethod;
+
+    }
+    void myRemoteControledMethod()
+    {
+        //do stuff
+        Debug.Log("Hello There");
     }
 
     // Update is called once per frame
