@@ -22,6 +22,7 @@ public class playerController : MonoBehaviour {
     private Ray ray;
     private RaycastHit rayHit;
 
+    // Use this for initialization
     void Start ()
     {
         controller = GetComponent<CharacterController>();
