@@ -15,7 +15,7 @@ public class playerController : MonoBehaviour {
     private int interactionLength = 10; // how close you have to be to push buttons
     Ray ray;
     RaycastHit hit;
-    bool isHoldingKey = false;
+    public bool isHoldingKey = false;
 
     // Use this for initialization
     void Start ()
@@ -49,7 +49,7 @@ public class playerController : MonoBehaviour {
             }
             //print("DeltaRot: " + deltaRot);
             
-            print("Difference: " + diff);
+            // print("Difference: " + diff);
 
             if (Input.GetKeyDown(KeyCode.E))
             {
@@ -57,7 +57,7 @@ public class playerController : MonoBehaviour {
             }
         }
 
-        print("LocalRotation: " + cam.transform.localRotation.eulerAngles);
+        // print("LocalRotation: " + cam.transform.localRotation.eulerAngles);
 
         /*if (deltaRot < -rotationLock)
         {
