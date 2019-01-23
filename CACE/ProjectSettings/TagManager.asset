@@ -8,6 +8,7 @@ TagManager:
   - player
   - button2
   - hazard
+  - button
   layers:
   - Default
   - TransparentFX
@@ -18,7 +19,7 @@ TagManager:
   - 
   - 
   - PostProcessing
-  - collisonDetection
+  - interactable
   - 
   - 
   - 

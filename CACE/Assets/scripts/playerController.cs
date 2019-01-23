@@ -1,21 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class playerController : MonoBehaviour
-{
+public class playerController : MonoBehaviour {
+    public delegate void delRemoteControl();
 
     public float moveSpeed;
     public float rotationSpeed;
     public bool isHoldingKey = false;
 
-    public int maxHealth = 3;
-    public int health;
-
+    //public List<delRemoteControl> RemoteControls = new List<delRemoteControl>();
+    public delRemoteControl RemoteControls;
+    
     private Vector2 mouseMovement;
     private static CharacterController controller;
     private Transform cam;
     private float rotationLock = 280f;
+
+    private int interactionLength = 10; // how close you have to be to push buttons
+    private Ray ray;
+    private RaycastHit rayHit;
 
     // Use this for initialization
     void Start()
@@ -24,10 +29,9 @@ public class playerController : MonoBehaviour
         cam = transform.GetChild(0);
         Cursor.visible = false;
 
-        health = maxHealth;
+        ray = new Ray(cam.position, cam.transform.forward);
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
         // This changes the player rotation
@@ -39,21 +43,19 @@ public class playerController : MonoBehaviour
         // Up/Down
         deltaRotation = new Vector3(mouseMovement.y, 0, 0) * rotationSpeed;
 
-        print("LocalRotation: " + cam.transform.eulerAngles);
-
-
         cam.transform.Rotate(deltaRotation);
 
         // This handles player movement
         Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         controller.Move(gameObject.transform.forward * movement.z * moveSpeed);
-        Debug.Log(gameObject.transform.forward * movement.z * moveSpeed);
-        controller.Move(gameObject.transform.right * movement.x * moveSpeed);
 
-        if(health <= 0)
-        {
-            // return to origin
-        }
+        controller.Move(gameObject.transform.right * movement.x * moveSpeed );
+
+        // Raycasting
+        ray = new Ray(cam.position, cam.transform.forward * interactionLength);
+        Debug.DrawRay(cam.position, cam.transform.forward * interactionLength, Color.red, 0.01f);
+        CheckForInteractable();
+      
     }
 
     void OnTriggerEnter(Collider other)
@@ -64,9 +66,23 @@ public class playerController : MonoBehaviour
             isHoldingKey = true;
         }
 
-        if (other.gameObject.CompareTag("hazard"))
-        {
+    }
 
+    void CheckForInteractable()
+    {
+        LayerMask mask = LayerMask.GetMask("interactable");
+        if (Physics.Raycast(ray, out rayHit, interactionLength, mask))
+        {
+            
+            bool didHit = false;
+            if (rayHit.collider.gameObject.tag.Equals("button"))
+            {
+                //rayHit.collider.GetComponent<Renderer>().
+                didHit = true;
+                //Debug.Log("I hit" + rayHit.transform.name);
+                RemoteControls.Invoke();
+            }
+            //rayHit.collider.gameObject.GetComponent<button2Script>().PlayerLooking(didHit);
         }
     }
 
