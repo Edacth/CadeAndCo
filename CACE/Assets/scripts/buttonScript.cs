@@ -22,13 +22,13 @@ public class buttonScript : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerController.RemoteControls += myRemoteControledMethod;
+        // PlayerController.RemoteControls += myRemoteControledMethod;
         
     }
 
     private void OnDisable()
     {
-        PlayerController.RemoteControls -= myRemoteControledMethod;
+        // PlayerController.RemoteControls -= myRemoteControledMethod;
 
     }
     void myRemoteControledMethod()

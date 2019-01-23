@@ -25,7 +25,8 @@ public class keyDoorScript : MonoBehaviour {
         gameObject = GetComponent<GameObject>();
         col = gameObject.transform.GetChild(1).gameObject as GameObject;
         txt = gameObject.GetComponent<Text>();
-        // txt.text = "You need a key";
+        closedRot = gameObject.transform.rotation.y;
+        openRot = closedRot + 90;
     }
 
     public void OnChildTriggerEnter(Collider other)
