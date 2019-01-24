@@ -23,7 +23,7 @@ public class playerController : MonoBehaviour
     private Transform cam;
     private float rotationLock = 280f;
 
-    private int interactionLength = 10; // how close you have to be to push buttons
+    private int interactionLength = 2; // how close you have to be to push buttons
     private Ray ray;
     private RaycastHit rayHit;
 
