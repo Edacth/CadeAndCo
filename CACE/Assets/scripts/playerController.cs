@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class playerController : MonoBehaviour {
+public class playerController : MonoBehaviour
+{
     public delegate void delRemoteControl();
 
     public float moveSpeed;
@@ -34,6 +35,7 @@ public class playerController : MonoBehaviour {
         controller = GetComponent<CharacterController>();
         cam = transform.GetChild(0);
         Cursor.visible = false;
+        
 
         ray = new Ray(cam.position, cam.transform.forward);
     }
@@ -61,14 +63,18 @@ public class playerController : MonoBehaviour {
         ray = new Ray(cam.position, cam.transform.forward * interactionLength);
         Debug.DrawRay(cam.position, cam.transform.forward * interactionLength, Color.red, 0.01f);
         CheckForInteractable();
-
-
       
         if(health <= 0)
         {
             ResetPlayer();
         }
 
+        RemoteControls.Invoke();
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
     }
 
     void OnTriggerEnter(Collider other)
@@ -89,21 +95,21 @@ public class playerController : MonoBehaviour {
             
             bool didHit = false;
             if (rayHit.collider.gameObject.tag.Equals("button"))
-            {
-                //rayHit.collider.GetComponent<Renderer>().
-                didHit = true;
-                //Debug.Log("I hit" + rayHit.transform.name);
-                RemoteControls.Invoke();
+            {                
             }
-            //rayHit.collider.gameObject.GetComponent<button2Script>().PlayerLooking(didHit);
         }
     }
 
-    // resets player when they die
+
     void ResetPlayer()
     {
         gameObject.transform.position = startPos;
         gameObject.transform.rotation = Quaternion.Euler(startRot);
         health = maxHealth;
+    }
+
+    public RaycastHit getRayHit()
+    {
+        return rayHit;
     }
 }
