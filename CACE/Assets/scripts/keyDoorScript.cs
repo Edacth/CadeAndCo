@@ -26,8 +26,10 @@ public class keyDoorScript : MonoBehaviour {
     void Start () {
         // gameObject = GetComponent<GameObject>();
         col = gameObject.transform.GetChild(1).gameObject as GameObject;
-        txt = gameObject.GetComponent<Text>();
-        closedRot = gameObject.transform.rotation.y;
+        //txt = gameObject.transform.GetChild(0).gameObject.GetComponent<Text>();
+        //Debug.Break();
+        txt.text = "You need a key";
+        closedRot = gameObject.transform.rotation.y - 90;
         openRot = closedRot + 90;
     }
 
@@ -36,13 +38,16 @@ public class keyDoorScript : MonoBehaviour {
         if (other.CompareTag("player"))
         {
             pc = other.GetComponent<playerController>();
+            print(pc.isHoldingKey);
             if (pc.isHoldingKey)
             {
+                print("has key");
                 // open door
                 coroutine = Open(1);
                 StartCoroutine(coroutine);
                 // take key
                 pc.isHoldingKey = false;
+                print(txt.text);
                 txt.text = "Open";
             }
         }
@@ -52,6 +57,7 @@ public class keyDoorScript : MonoBehaviour {
     {
         while(goal >= t)
         {
+            print(closedRot + " " + openRot);
             t += speed * Time.deltaTime;
 
             interpos = (openRot * (1 - t) + closedRot * t);
