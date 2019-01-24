@@ -6,50 +6,80 @@ public class buttonScript : MonoBehaviour
 {
 
     public bool pressed = false;
+    public bool prevButtonState;
     public GameObject player;
+    public Color passive, highlight;
 
     private playerController PlayerController;
+    private bool hoverOver = false;
+    private Transform child;
 
-    Material myMaterial;
+    private Material myMaterial;
+    private Material childMaterial;
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
+        prevButtonState = pressed;
         myMaterial = GetComponent<Renderer>().material;
         PlayerController = player.GetComponent<playerController>();
-
+        child = transform.GetChild(0);
+        childMaterial = child.GetComponent<Renderer>().material;
     }
 
     private void OnEnable()
     {
-        // PlayerController.RemoteControls += myRemoteControledMethod;
+        PlayerController.RemoteControls += myRemoteControledMethod;
         
     }
 
     private void OnDisable()
     {
-        // PlayerController.RemoteControls -= myRemoteControledMethod;
+        PlayerController.RemoteControls -= myRemoteControledMethod;
 
     }
     void myRemoteControledMethod()
     {
-        //do stuff
-        Debug.Log("Hello There");
+        if (PlayerController.getRayHit().transform == transform)
+        {
+            hoverOver = true;
+        }
+        else
+        {
+            hoverOver = false;
+        }
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && hoverOver)
         {
-            pressed = true;
-            myMaterial.color = Color.green;
+            pressed = !pressed;
         }
 
-        if (Input.GetKeyDown(KeyCode.R))
+        if (hoverOver && childMaterial.color != highlight)
         {
-            pressed = false;
-            myMaterial.color = Color.blue;
+            childMaterial.color = highlight;
         }
+        else if (!hoverOver && childMaterial.color != passive)
+        {
+            childMaterial.color = passive;
+        }
+
+        if (pressed != prevButtonState)
+        {
+            if (pressed)
+            {
+                child.transform.localPosition = new Vector3(0, 0 ,0);
+            }
+            else
+            {
+                child.transform.localPosition = new Vector3(0, 4f, 0);
+            }
+            prevButtonState = pressed;
+        }
+
     }
 }

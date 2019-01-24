@@ -6,7 +6,10 @@ public class doorScript : MonoBehaviour {
 
     public bool prevButtonState;
     public GameObject myButton;
-    buttonScript myButtonScript;
+    public float lowerBound;
+    public float upperBound;
+
+    private buttonScript myButtonScript;
     private IEnumerator coroutine;
 
     float t = 0;
@@ -31,11 +34,9 @@ public class doorScript : MonoBehaviour {
             
             StartCoroutine(coroutine);
             prevButtonState = myButtonScript.pressed;
-            /*rb.detectCollisions = false;
-            renderer.enabled = false;*/
         }
 
-        if (Input.GetKeyDown(KeyCode.O))
+        /*if (Input.GetKeyDown(KeyCode.O))
         {
             Debug.Log("O");
             coroutine = Open(1);
@@ -54,18 +55,17 @@ public class doorScript : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.L))
         {
             StopCoroutine(coroutine);
-        }
+        }*/
 
     }
 
     IEnumerator Open(float goal)
     {
-        Debug.Log("Coroutine");
         while (goal >= t)
         {      
             t += 0.01f;
 
-            interpos = (0.59f * (1 - t) + 10 * t);
+            interpos = (lowerBound * (1 - t) + upperBound * t);
             transform.position = new Vector3(transform.position.x, interpos, transform.position.z);
             yield return null;
             
@@ -74,7 +74,7 @@ public class doorScript : MonoBehaviour {
         {
             t -= 0.01f;
 
-            interpos = (0.59f * (1 - t) + 10 * t);
+            interpos = (lowerBound * (1 - t) + upperBound * t);
             transform.position = new Vector3(transform.position.x, interpos, transform.position.z);
             yield return null;
 
