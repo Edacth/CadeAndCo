@@ -69,11 +69,16 @@ public class playerController : MonoBehaviour
             ResetPlayer();
         }
 
-        RemoteControls.Invoke();
+        // RemoteControls.Invoke();
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
+        }
+
+        if (isHoldingKey)
+        {
+            print("i have a key");
         }
     }
 

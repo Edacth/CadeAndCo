@@ -12,6 +12,7 @@ public class keyDoorCollider : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
+        print("collidre hit");
         parent.OnChildTriggerEnter(other);
     }
 }
