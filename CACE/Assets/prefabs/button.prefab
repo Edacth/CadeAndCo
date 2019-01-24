@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 136128415424185836}
   - component: {fileID: 114247250885165130}
   m_Layer: 9
-  m_Name: button2
+  m_Name: button
   m_TagString: button
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

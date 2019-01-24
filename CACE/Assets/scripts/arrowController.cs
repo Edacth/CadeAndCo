@@ -5,66 +5,61 @@ using UnityEngine;
 public class arrowController : MonoBehaviour {
 
     public float distance = 10f;
-    public float speed = 0.1f;
+    public float speed = 10f;
     public float recharge = 4f; // seconds
+    public float shootTime = 0.5f;
     public float elapsed = 0f;
 
     public playerController pc;
 
-    private bool hitThisCycle = false;
+    public bool hitThisCycle = false;
     public bool shooting = false; // coroutine running
 
-    private IEnumerator coroutine;
-    private float t = 0;
     private Vector3 interpos;
     private Vector3 startPos;
 
     private void Start()
     {
         startPos = transform.position;
-        pc = GetComponent<playerController>();
+        pc = FindObjectOfType<playerController>();
     }
     void Update()
     {
-        if (!shooting)
+        elapsed += Time.deltaTime;
+        if (shooting)
         {
-            elapsed += Time.deltaTime;
+            if(elapsed >= shootTime)
+            {
+                // reset
+                transform.position = new Vector3(startPos.x, startPos.y, startPos.z);
+                shooting = false;
+                hitThisCycle = false;
+                elapsed = 0f;
+            }
+            else
+            {
+                transform.position += transform.up * speed * Time.deltaTime;
+            }
+            
         }
-
-        if(elapsed >= recharge)
+        else
         {
-            shooting = true;
-            coroutine = Shoot(1);
-            elapsed = 0f;          
-            StartCoroutine(coroutine);
-        }
+            if (elapsed >= recharge)
+            {
+                shooting = true;
+                elapsed = 0f;
+            }
+        }        
     }
-    IEnumerator Shoot(float goal)
+
+    void OnTriggerEnter(Collider other)
     {
-        while(t <= goal)
+        // hit && not hit this cycle
+        if ( !hitThisCycle && other.CompareTag("player"))
         {
-            t += speed * Time.deltaTime;
-
-            interpos =  new Vector3(startPos.x, startPos.y, distance * t + startPos.z * (1 - t));
-            transform.position = interpos;
-            yield return null;
-        }
-        if(t >= goal)
-        {
-            // reset
-            transform.position = startPos;
-            shooting = false;
-            t = 0f;
-            StopCoroutine(coroutine);
+            pc.health--;
+            hitThisCycle = true;
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("player"))
-        {
-            // pc.take damage / reset to center of room
-            // gameObject.SetActive(false)
-        }
-    }
 }
