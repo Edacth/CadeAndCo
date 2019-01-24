@@ -59,9 +59,9 @@ public class playerController : MonoBehaviour
         CheckForInteractable();
         RemoteControls.Invoke();
 
-        if (Input.GetKeyDown(KeyCode.U))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            RemoteControls();
+            Application.Quit();
         }
     }
 
