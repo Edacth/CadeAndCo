@@ -7,8 +7,8 @@ public class keyDoorScript : MonoBehaviour {
 
     private IEnumerator coroutine;
     // deg
-    public float closedRot = 0f;
-    public float openRot = 90f;
+    public float closedRot;
+    public float openRot;
     public float speed = 0.1f;
     bool done = false;
     float t = 0;
@@ -29,8 +29,8 @@ public class keyDoorScript : MonoBehaviour {
         //txt = gameObject.transform.GetChild(0).gameObject.GetComponent<Text>();
         //Debug.Break();
         txt.text = "You need a key";
-        closedRot = gameObject.transform.rotation.y - 90;
-        openRot = closedRot + 90;
+        //closedRot = gameObject.transform.rotation.y - 90;
+        //openRot = closedRot + 90;
     }
 
     public void OnChildTriggerEnter(Collider other)
@@ -38,16 +38,16 @@ public class keyDoorScript : MonoBehaviour {
         if (other.CompareTag("player"))
         {
             pc = other.GetComponent<playerController>();
-            print(pc.isHoldingKey);
+            //print(pc.isHoldingKey);
             if (pc.isHoldingKey)
             {
-                print("has key");
+                //print("has key");
                 // open door
                 coroutine = Open(1);
                 StartCoroutine(coroutine);
                 // take key
                 pc.isHoldingKey = false;
-                print(txt.text);
+                //print(txt.text);
                 txt.text = "Open";
             }
         }
@@ -57,7 +57,7 @@ public class keyDoorScript : MonoBehaviour {
     {
         while(goal >= t)
         {
-            print(closedRot + " " + openRot);
+            //print(closedRot + " " + openRot);
             t += speed * Time.deltaTime;
 
             interpos = (openRot * (1 - t) + closedRot * t);

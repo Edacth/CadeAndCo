@@ -21,9 +21,8 @@ public class playerController : MonoBehaviour
     private Vector2 mouseMovement;
     private static CharacterController controller;
     private Transform cam;
-    private float rotationLock = 280f;
 
-    private int interactionLength = 2; // how close you have to be to push buttons
+    private int interactionLength = 3; // how close you have to be to push buttons
     private Ray ray;
     private RaycastHit rayHit;
 
@@ -74,11 +73,6 @@ public class playerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
-        }
-
-        if (isHoldingKey)
-        {
-            print("i have a key");
         }
     }
 
