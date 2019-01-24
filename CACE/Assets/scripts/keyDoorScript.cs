@@ -18,11 +18,13 @@ public class keyDoorScript : MonoBehaviour {
     GameObject col;
     public playerController pc;
 
+    bool hitThisCycle = false;
+
     public Text txt;
 
     // Use this for initialization
     void Start () {
-        gameObject = GetComponent<GameObject>();
+        // gameObject = GetComponent<GameObject>();
         col = gameObject.transform.GetChild(1).gameObject as GameObject;
         txt = gameObject.GetComponent<Text>();
         closedRot = gameObject.transform.rotation.y;
@@ -59,6 +61,7 @@ public class keyDoorScript : MonoBehaviour {
         if(goal <= t)
         {
             StopCoroutine(coroutine);
+            hitThisCycle = false;
         }
     }
 }

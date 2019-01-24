@@ -10,10 +10,14 @@ public class playerController : MonoBehaviour
     public float moveSpeed;
     public float rotationSpeed;
     public bool isHoldingKey = false;
+    public int health = 3;
+    public int maxHealth = 3;
 
     //public List<delRemoteControl> RemoteControls = new List<delRemoteControl>();
     public delRemoteControl RemoteControls;
-    
+
+    private Vector3 startPos;
+    private Vector3 startRot;
     private Vector2 mouseMovement;
     private static CharacterController controller;
     private Transform cam;
@@ -26,6 +30,8 @@ public class playerController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        startPos = gameObject.transform.position;
+        startRot = gameObject.transform.rotation.eulerAngles;
         controller = GetComponent<CharacterController>();
         cam = transform.GetChild(0);
         Cursor.visible = false;
@@ -57,6 +63,12 @@ public class playerController : MonoBehaviour
         ray = new Ray(cam.position, cam.transform.forward * interactionLength);
         Debug.DrawRay(cam.position, cam.transform.forward * interactionLength, Color.red, 0.01f);
         CheckForInteractable();
+      
+        if(health <= 0)
+        {
+            ResetPlayer();
+        }
+
         RemoteControls.Invoke();
 
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -88,9 +100,16 @@ public class playerController : MonoBehaviour
         }
     }
 
+
+    void ResetPlayer()
+    {
+        gameObject.transform.position = startPos;
+        gameObject.transform.rotation = Quaternion.Euler(startRot);
+        health = maxHealth;
+    }
+
     public RaycastHit getRayHit()
     {
         return rayHit;
     }
-
 }
