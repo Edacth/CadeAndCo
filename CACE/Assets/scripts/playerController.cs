@@ -69,7 +69,7 @@ public class playerController : MonoBehaviour
             ResetPlayer();
         }
 
-        // RemoteControls.Invoke();
+        RemoteControls.Invoke();
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
