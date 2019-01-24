@@ -7,8 +7,8 @@ public class keyDoorScript : MonoBehaviour {
 
     private IEnumerator coroutine;
     // deg
-    public float closedRot = 0f;
-    public float openRot = 90f;
+    public float closedRot;
+    public float openRot;
     public float speed = 0.1f;
     bool done = false;
     float t = 0;
@@ -29,8 +29,8 @@ public class keyDoorScript : MonoBehaviour {
         //txt = gameObject.transform.GetChild(0).gameObject.GetComponent<Text>();
         //Debug.Break();
         txt.text = "You need a key";
-        closedRot = gameObject.transform.rotation.y - 90;
-        openRot = closedRot + 90;
+        //closedRot = gameObject.transform.rotation.y - 90;
+        //openRot = closedRot + 90;
     }
 
     public void OnChildTriggerEnter(Collider other)
