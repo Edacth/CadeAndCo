@@ -11,6 +11,7 @@ public class inGameUI : MonoBehaviour {
     int lives;
     public Image h2;
     public Image h3;
+    public Text timeTxt;
 
 	// Use this for initialization
 	void Start () {
@@ -27,5 +28,7 @@ public class inGameUI : MonoBehaviour {
 
         h2.enabled = lives > 1;
         h3.enabled = lives > 2;
+
+        timeTxt.text = Mathf.Round(Time.timeSinceLevelLoad).ToString();
     }
 }
