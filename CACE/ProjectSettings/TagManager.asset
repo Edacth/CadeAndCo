@@ -9,6 +9,7 @@ TagManager:
   - button2
   - hazard
   - button
+  - const
   layers:
   - Default
   - TransparentFX

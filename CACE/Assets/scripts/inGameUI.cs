@@ -7,6 +7,7 @@ public class inGameUI : MonoBehaviour {
 
     playerController pc;
     public Toggle t;
+    public timeHolder th;
 
     int lives;
     public Image h2;
@@ -17,6 +18,7 @@ public class inGameUI : MonoBehaviour {
 	void Start () {
         pc = FindObjectOfType<playerController>();
         t = GetComponentInChildren<Toggle>();
+        th = GameObject.FindGameObjectWithTag("const").GetComponent<timeHolder>();
         t.isOn = false;
         lives = pc.health;
     }
@@ -30,5 +32,6 @@ public class inGameUI : MonoBehaviour {
         h3.enabled = lives > 2;
 
         timeTxt.text = Mathf.Round(Time.timeSinceLevelLoad).ToString();
+        th.score = timeTxt.text;
     }
 }
