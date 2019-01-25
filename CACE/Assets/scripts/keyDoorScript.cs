@@ -48,7 +48,7 @@ public class keyDoorScript : MonoBehaviour {
                 // take key
                 pc.isHoldingKey = false;
                 //print(txt.text);
-                txt.text = "Open";
+                
             }
         }
     }
