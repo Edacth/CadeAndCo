@@ -9,9 +9,12 @@ EditorBuildSettings:
     path: Assets/scenes/testZoneScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
+    path: Assets/scenes/startMenu.unity
+    guid: b614ad46c68b9864c98535e8c2985b6d
+  - enabled: 1
     path: Assets/scenes/mazeScene.unity
     guid: 5def518daa3ba3742b8ca3bcb9219935
   - enabled: 1
-    path: Assets/scenes/startMenu.unity
-    guid: b614ad46c68b9864c98535e8c2985b6d
+    path: Assets/scenes/loseScene.unity
+    guid: 1ba4411e5e4fb374e89d55537fa2cfda
   m_configObjects: {}
